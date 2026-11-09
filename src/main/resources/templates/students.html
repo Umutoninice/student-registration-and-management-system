@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Students</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container wide">
+    <h1 th:text="${singleView} ? 'Student Details' : 'Registered Students'">Registered Students</h1>
+
+    <div class="alert error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+    <div class="alert error" th:if="${notFoundMessage}" th:text="${notFoundMessage}"></div>
+
+    <div class="table-wrap" th:if="${!#lists.isEmpty(students)}">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Age</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="s : ${students}">
+                <td><a th:href="@{/student/{id}(id=${s.id})}" th:text="${s.id}">1</a></td>
+                <td th:text="${s.firstName}">First</td>
+                <td th:text="${s.lastName}">Last</td>
+                <td th:text="${s.email}">email@example.com</td>
+                <td th:text="${s.age}">20</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="empty" th:if="${#lists.isEmpty(students) and notFoundMessage == null and errorMessage == null}">
+        No students are registered yet.
+    </p>
+
+    <p class="nav">
+        <a th:href="@{/student/register}">&larr; Register a student</a>
+        <span th:if="${singleView}"> | <a th:href="@{/student/all}">View all students</a></span>
+    </p>
+</main>
+</body>
+</html>
